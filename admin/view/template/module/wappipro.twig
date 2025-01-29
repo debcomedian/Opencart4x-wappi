@@ -89,10 +89,51 @@
                             <label>{{ btn_duble_admin }}</label>
                             <input type="checkbox" name="wappipro_admin_{{ order_status.order_status_id }}_active" value="true" {{ wappipro_admin_order_status_active[order_status.order_status_id] == 'true' ? 'checked="checked"' : '' }}>
                             <textarea name="wappipro_{{ order_status.order_status_id }}_message" class="form-control">{{ wappipro_order_status_message[order_status.order_status_id] }}</textarea>
-                            <div class="text-muted">{{ btn_status_order_description }}</div>
+                            {% if replacements is not empty %}
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#variablesModal">{{ text_available_variables }}</a>
+                            {% else %}
+                                <p style="color: red;">{{ text_no_available_variables }}</p>
+                            {% endif %}
                         </div>
                     {% endfor %}
-                    <input type="submit" name="wappipro_save_settings" value="{{ btn_token_save_all }}">
+                    <input type="submit" name="wappipro_save_settings" value="{{ btn_token_save_all }}" class="btn btn-primary">
+                    <div class="modal fade" id="variablesModal" tabindex="-1" aria-labelledby="variablesModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lx"> 
+                        <div class="modal-content">
+                        
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="variablesModalLabel">
+                            <i class="fa fa-info-circle"></i> {{ text_available_variables }}
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        
+                        <div class="modal-body">
+                            <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                <th style="width: 30%;">{{ text_variable }}</th>
+                                <th>{{ text_description }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for variable, description in replacements %}
+                                <tr>
+                                    <td><code>{{ variable }}</code></td>
+                                    <td>{{ description }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ text_close }}</button>
+                        </div>
+                        
+                        </div>
+                    </div>
+                    </div>
                 </form>
             </div>
         </div>
